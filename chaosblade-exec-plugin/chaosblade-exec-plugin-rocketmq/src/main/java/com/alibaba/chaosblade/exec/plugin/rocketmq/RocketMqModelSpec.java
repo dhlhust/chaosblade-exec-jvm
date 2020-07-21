@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.chaosblade.exec.common.model.FrameworkModelSpec;
+import com.alibaba.chaosblade.exec.common.model.action.ActionSpec;
+import com.alibaba.chaosblade.exec.common.model.action.delay.DelayActionSpec;
+import com.alibaba.chaosblade.exec.common.model.action.exception.ThrowCustomExceptionActionSpec;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
 
 /**
@@ -12,6 +17,33 @@ import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
  * @email rinalhb@icloud.com
  */
 public class RocketMqModelSpec extends FrameworkModelSpec implements RocketMqConstant {
+
+    public RocketMqModelSpec() {
+        addActionExample();
+    }
+
+    private void addActionExample() {
+        List<ActionSpec> actions = getActions();
+        for (ActionSpec action : actions) {
+            if (action instanceof DelayActionSpec) {
+                action.setLongDesc("RocketMq delay experiment");
+                action.setExample(Example.builder()
+                        .addExampleCommand(ExampleCommand.builder()
+                                .setAnnotation("Do a delay 3s experiment on the RocketMq when topic=xx consumerGroup=xx")
+                                .setCommand("blade create rocketmq --topic=xx --consumerGroup=xx delay --time=3000")
+                                .build()
+                        ).build());
+            } else if (action instanceof ThrowCustomExceptionActionSpec) {
+                action.setLongDesc("RocketMq throws custom exception experiment");
+                action.setExample(Example.builder()
+                        .addExampleCommand(ExampleCommand.builder()
+                                .setAnnotation("Do a throw custom exception experiment on the RocketMq when topic=xx consumerGroup=xx")
+                                .setCommand("blade create rocketmq throwCustomException --exception java.lang.Exception --topic=xx --consumerGroup=xx")
+                                .build()
+                        ).build());
+            }
+        }
+    }
 
     @Override
     protected List<MatcherSpec> createNewMatcherSpecs() {
@@ -41,8 +73,4 @@ public class RocketMqModelSpec extends FrameworkModelSpec implements RocketMqCon
             + "specific group";
     }
 
-    @Override
-    public String getExample() {
-        return null;
-    }
 }

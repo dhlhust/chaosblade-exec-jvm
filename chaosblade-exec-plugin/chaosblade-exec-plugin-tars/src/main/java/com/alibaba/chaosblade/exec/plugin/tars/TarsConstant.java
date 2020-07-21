@@ -1,7 +1,5 @@
 package com.alibaba.chaosblade.exec.plugin.tars;
 
-import com.alibaba.chaosblade.exec.common.plugin.MethodConstant;
-
 /**
  * @author saikei
  * @email lishiji@huya.com

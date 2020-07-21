@@ -10,6 +10,8 @@ import com.alibaba.chaosblade.exec.common.model.Model;
 import com.alibaba.chaosblade.exec.common.model.action.ActionModel;
 import com.alibaba.chaosblade.exec.common.model.action.BaseActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.DirectlyInjectionAction;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 import com.alibaba.chaosblade.exec.common.util.StringUtils;
 import com.alibaba.chaosblade.exec.plugin.jvm.JvmConstant;
 import com.alibaba.chaosblade.exec.plugin.jvm.StoppableActionExecutor;
@@ -42,12 +44,12 @@ public class JvmOomActionSpec extends BaseActionSpec implements DirectlyInjectio
 
     @Override
     public String getShortDesc() {
-        return "JVM out of memory";
+        return "JVM out of memory experiment";
     }
 
     @Override
     public String getLongDesc() {
-        return "JVM out of memory";
+        return "JVM out of memory experiment";
     }
 
     @Override
@@ -86,4 +88,19 @@ public class JvmOomActionSpec extends BaseActionSpec implements DirectlyInjectio
         enhancerModel.merge(model);
         ((StoppableActionExecutor)getActionExecutor()).stop(enhancerModel);
     }
+
+    @Override
+    public Example getExample() {
+        return Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("The Heap area is filled with memory.")
+                        .setCommand("blade c jvm oom --area HEAP --wild-mode true")
+                        .build()
+                ).addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("The Metaspace area is filled with memory. Note that after executing this experiment, the application needs to be restarted ！！！")
+                        .setCommand("blade c jvm oom --area NOHEAP --wild-mode true")
+                        .build()
+                ).build();
+    }
+
 }

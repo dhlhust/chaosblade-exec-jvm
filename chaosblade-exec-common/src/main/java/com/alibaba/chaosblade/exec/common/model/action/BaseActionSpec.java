@@ -16,6 +16,7 @@
 
 package com.alibaba.chaosblade.exec.common.model.action;
 
+import com.alibaba.chaosblade.exec.common.model.example.Example;
 import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public abstract class BaseActionSpec implements ActionSpec {
     private ConcurrentHashMap<String, MatcherSpec> matcherSpecs = new ConcurrentHashMap<String, MatcherSpec>();
 
     private ActionExecutor actionExecutor;
+
+    private String LongDesc;
+
+    private Example example;
 
     public BaseActionSpec(ActionExecutor actionExecutor) {
         this.actionExecutor = actionExecutor;
@@ -54,5 +59,25 @@ public abstract class BaseActionSpec implements ActionSpec {
     @Override
     public ActionExecutor getActionExecutor() {
         return actionExecutor;
+    }
+
+    @Override
+    public void setExample(Example example) {
+        this.example = example;
+    }
+
+    @Override
+    public Example getExample() {
+        return example;
+    }
+
+    @Override
+    public String getLongDesc() {
+        return LongDesc;
+    }
+
+    @Override
+    public void setLongDesc(String longDesc) {
+        LongDesc = longDesc;
     }
 }

@@ -20,8 +20,10 @@ import java.util.List;
 
 import com.alibaba.chaosblade.exec.common.aop.PredicateResult;
 import com.alibaba.chaosblade.exec.common.model.FlagSpec;
+import com.alibaba.chaosblade.exec.common.model.action.ActionExecutor;
 import com.alibaba.chaosblade.exec.common.model.action.ActionModel;
 import com.alibaba.chaosblade.exec.common.model.action.BaseActionSpec;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
 
 /**
  * @author Changjun Xiao
@@ -61,4 +63,5 @@ public class ThrowDeclaredExceptionActionSpec extends BaseActionSpec {
     public PredicateResult predicate(ActionModel actionModel) {
         return PredicateResult.success();
     }
+
 }

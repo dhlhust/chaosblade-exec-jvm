@@ -17,6 +17,11 @@
 package com.alibaba.chaosblade.exec.plugin.jedis;
 
 import com.alibaba.chaosblade.exec.common.model.FrameworkModelSpec;
+import com.alibaba.chaosblade.exec.common.model.action.ActionSpec;
+import com.alibaba.chaosblade.exec.common.model.action.delay.DelayActionSpec;
+import com.alibaba.chaosblade.exec.common.model.action.exception.ThrowCustomExceptionActionSpec;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
 
 import java.util.ArrayList;
@@ -26,6 +31,38 @@ import java.util.List;
  * @author guoping.yao <a href="mailto:bryan880901@qq.com">
  */
 public class JedisModelSpec extends FrameworkModelSpec {
+
+    public JedisModelSpec() {
+        addActionExample();
+    }
+
+    private void addActionExample() {
+        List<ActionSpec> actions = getActions();
+        for (ActionSpec action : actions) {
+            if (action instanceof DelayActionSpec) {
+                action.setLongDesc("Jedis commands delay experiments");
+                action.setExample(Example.builder()
+                        .addExampleCommand(ExampleCommand.builder()
+                                .setAnnotation("Do a delay 2s experiment on Jedis `hset key name lina` command")
+                                .setCommand("blade create jedis delay --cmd hset --key name --time 2000")
+                                .build()
+                        ).addExampleCommand(ExampleCommand.builder()
+                                .setAnnotation("Do a delay 2s experiment on Jedis `key name lina` command")
+                                .setCommand("blade create jedis delay --key name --time 2000")
+                                .build()
+                        ).build());
+            }
+            if (action instanceof ThrowCustomExceptionActionSpec) {
+                action.setLongDesc("Jedis commands throws custom exception experiments");
+                action.setExample(Example.builder()
+                        .addExampleCommand(ExampleCommand.builder()
+                                .setAnnotation("Do a throws custom exception experiment on Jedis `key name lina` command")
+                                .setCommand("blade create jedis throwCustomException --exception java.lang.Exception --key name")
+                                .build()
+                        ).build());
+            }
+        }
+    }
 
     @Override
     protected List<MatcherSpec> createNewMatcherSpecs() {
@@ -53,8 +90,4 @@ public class JedisModelSpec extends FrameworkModelSpec {
         return "jedis experiment contains delay and exception by command and so on.";
     }
 
-    @Override
-    public String getExample() {
-        return "jedis  --cmd hset --key test_key ";
-    }
 }

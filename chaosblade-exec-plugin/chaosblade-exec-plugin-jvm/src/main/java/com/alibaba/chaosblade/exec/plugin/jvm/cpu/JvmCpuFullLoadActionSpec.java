@@ -10,6 +10,8 @@ import com.alibaba.chaosblade.exec.common.model.Model;
 import com.alibaba.chaosblade.exec.common.model.action.ActionModel;
 import com.alibaba.chaosblade.exec.common.model.action.BaseActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.DirectlyInjectionAction;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 import com.alibaba.chaosblade.exec.plugin.jvm.JvmConstant;
 import com.alibaba.chaosblade.exec.plugin.jvm.StoppableActionExecutor;
 
@@ -67,4 +69,19 @@ public class JvmCpuFullLoadActionSpec extends BaseActionSpec implements Directly
         enhancerModel.merge(model);
         ((StoppableActionExecutor)getActionExecutor()).stop(enhancerModel);
     }
+
+    @Override
+    public Example getExample() {
+        return Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Specifies full load of all kernel")
+                        .setCommand("blade c jvm cfl --process tomcat")
+                        .build()
+                ).addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Specifies full load of two kernel")
+                        .setCommand("blade c jvm cfl --cpu-count 2 --process tomcat")
+                        .build()
+                ).build();
+    }
+
 }

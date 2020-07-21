@@ -77,7 +77,7 @@ Commit message could help reviewers better understand what is the purpose of sub
 * refactor: A code change that neither fixes a bug nor adds a feature
 * perf: A code change that improves performance
 * test: Adding missing or correcting existing tests
-* chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+* chore: Changes to the build exampleCommand or auxiliary tools and libraries such as documentation generation
 
 On the other side, we discourage contributors from committing message like the following ways:
 

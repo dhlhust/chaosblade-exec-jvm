@@ -25,6 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.alibaba.chaosblade.exec.common.aop.PredicateResult;
 import com.alibaba.chaosblade.exec.common.model.action.ActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.DirectlyInjectionAction;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 import com.alibaba.chaosblade.exec.common.model.matcher.EffectCountMatcherSpec;
 import com.alibaba.chaosblade.exec.common.model.matcher.EffectPercentMatcherSpec;
 import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
@@ -131,5 +133,23 @@ public abstract class BaseModelSpec implements ModelSpec {
     @Override
     public String getScope() {
         return "host";
+    }
+
+    @Override
+    public String getExample() {
+        List<ActionSpec> actions = getActions();
+        StringBuilder result = new StringBuilder();
+        for (ActionSpec action : actions) {
+            Example example = action.getExample();
+            if (example != null && example.getExampleCommands() != null) {
+                for (ExampleCommand exampleCommand : example.getExampleCommands()) {
+                    result.append("\n\n  # ");
+                    result.append(exampleCommand.getAnnotation());
+                    result.append("\n  ");
+                    result.append(exampleCommand.getCommand());
+                }
+            }
+        }
+        return result.toString().replaceFirst("\n\n", "");
     }
 }

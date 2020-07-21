@@ -30,19 +30,13 @@ import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
 public abstract class FrameworkModelSpec extends BaseModelSpec {
 
     public FrameworkModelSpec() {
-        addDelayActionSpec();
-        addThrowExceptionActionSpec();
-
-        addChildNewMatchersToAllActions();
-    }
-
-    private void addThrowExceptionActionSpec() {
-        this.addActionSpec(new ThrowCustomExceptionActionSpec());
-    }
-
-    private void addDelayActionSpec() {
         DelayActionSpec delayActionSpec = new DelayActionSpec();
         this.addActionSpec(delayActionSpec);
+
+        ThrowCustomExceptionActionSpec customExceptionActionSpec = new ThrowCustomExceptionActionSpec();
+        this.addActionSpec(customExceptionActionSpec);
+
+        addChildNewMatchersToAllActions();
     }
 
     private void addChildNewMatchersToAllActions() {

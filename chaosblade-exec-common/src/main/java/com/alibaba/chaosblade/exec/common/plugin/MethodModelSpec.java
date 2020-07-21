@@ -24,6 +24,8 @@ import com.alibaba.chaosblade.exec.common.model.action.delay.DelayActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.exception.ThrowCustomExceptionActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.exception.ThrowDeclaredExceptionActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.returnv.ReturnValueActionSpec;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 
 /**
  * @author Changjun Xiao
@@ -38,11 +40,25 @@ public class MethodModelSpec extends BaseModelSpec {
     }
 
     private void addDelayAction() {
-        addActionSpec(new DelayActionSpec());
+        DelayActionSpec actionSpec = new DelayActionSpec();
+        actionSpec.setLongDesc("The Java method delays the experiment");
+        actionSpec.setExample(Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Inject a 4-second delay failure on the sayHello method")
+                        .setCommand("blade c jvm delay --time 4000 --classname=com.example.controller.DubboController --methodname=sayHello")
+                        .build()
+                ).build());
+        addActionSpec(actionSpec);
     }
 
     private void addReturnValueAction() {
         ReturnValueActionSpec returnValueActionSpec = new ReturnValueActionSpec();
+        returnValueActionSpec.setExample(Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Inject a tamper return value failure on the com.example.controller.DubboController.hello() method")
+                        .setCommand("blade c jvm return --value hello-chaosblade --classname com.example.controller.DubboController --methodname hello")
+                        .build()
+                ).build());
         addActionSpec(returnValueActionSpec);
     }
 
@@ -54,7 +70,23 @@ public class MethodModelSpec extends BaseModelSpec {
 
     private void addThrowExceptionActionDef() {
         ThrowCustomExceptionActionSpec throwCustomExceptionActionDef = new ThrowCustomExceptionActionSpec();
+        throwCustomExceptionActionDef.setExample(Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Inject a custom exception failure on the com.example.controller.DubboController.hello() method, effect the two requests")
+                        .setCommand("blade c jvm throwCustomException --exception java.lang.Exception --classname com.example.controller.DubboController --methodname sayHello --effect-count 2")
+                        .build()
+                ).build()
+
+        );
         ThrowDeclaredExceptionActionSpec throwDeclaredExceptionActionDef = new ThrowDeclaredExceptionActionSpec();
+        throwDeclaredExceptionActionDef.setExample(Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Throw the first declared exception of method, effect the two requests")
+                        .setCommand("blade c jvm throwDeclaredException --classname com.example.controller.DubboController --methodname sayHello --effect-count 2")
+                        .build()
+                ).build()
+
+        );
         addActionSpec(throwCustomExceptionActionDef);
         addActionSpec(throwDeclaredExceptionActionDef);
     }
@@ -71,16 +103,12 @@ public class MethodModelSpec extends BaseModelSpec {
 
     @Override
     public String getShortDesc() {
-        return "method";
+        return "Experiment with the JVM";
     }
 
     @Override
     public String getLongDesc() {
-        return "method";
+        return "Experiment with the JVM, and you can specify classes, method injection delays, return values, exception failure scenarios, or write Groovy and Java scripts to implement complex scenarios.";
     }
 
-    @Override
-    public String getExample() {
-        return "method";
-    }
 }

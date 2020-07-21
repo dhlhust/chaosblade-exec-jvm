@@ -26,6 +26,8 @@ import com.alibaba.chaosblade.exec.common.model.Model;
 import com.alibaba.chaosblade.exec.common.model.action.ActionModel;
 import com.alibaba.chaosblade.exec.common.model.action.BaseActionSpec;
 import com.alibaba.chaosblade.exec.common.model.action.DirectlyInjectionAction;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
+import com.alibaba.chaosblade.exec.common.model.example.ExampleCommand;
 import com.alibaba.chaosblade.exec.plugin.jvm.JvmConstant;
 import com.alibaba.chaosblade.exec.plugin.jvm.StoppableActionExecutor;
 
@@ -83,4 +85,15 @@ public class CodeCacheFillingActionSpec extends BaseActionSpec implements Direct
         enhancerModel.merge(model);
         ((StoppableActionExecutor)getActionExecutor()).stop(enhancerModel);
     }
+
+    @Override
+    public Example getExample() {
+        return Example.builder()
+                .addExampleCommand(ExampleCommand.builder()
+                        .setAnnotation("Inject code cache full fault")
+                        .setCommand("blade c jvm CodeCacheFilling --process tomcat")
+                        .build()
+                ).build();
+    }
+
 }

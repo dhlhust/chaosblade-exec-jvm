@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.alibaba.chaosblade.exec.common.aop.PredicateResult;
 import com.alibaba.chaosblade.exec.common.model.FlagSpec;
+import com.alibaba.chaosblade.exec.common.model.example.Example;
 import com.alibaba.chaosblade.exec.common.model.matcher.MatcherSpec;
 
 /**
@@ -48,6 +49,13 @@ public interface ActionSpec {
      * @return
      */
     String getShortDesc();
+
+    /**
+     * Get long description
+     *
+     * @return
+     */
+    void setLongDesc(String longDesc);
 
     /**
      * Get long description
@@ -97,5 +105,21 @@ public interface ActionSpec {
      * @return
      */
     ActionExecutor getActionExecutor();
+
+    /**
+     * Set the experiment example
+     *
+     * @param example
+     *
+     * @return
+     */
+    void setExample(Example example);
+
+    /**
+     * Get the experiment example
+     *
+     * @return
+     */
+    Example getExample();
 
 }
